@@ -16,6 +16,18 @@ app.use(bodyparser.urlencoded({ extended: true }));
 
 
 
+import userRouter from './routes/user.routes.js'
+
+
+
+
+
+
+
+app.use("/api/v1/users", userRouter)
+
+
+
 app.get("/",(req,res)=>{
     res.send("hello")
 })
