@@ -4,7 +4,7 @@ import { init_Ola_Map, init_My_Map, add_Geo_Location } from "../redux/slice/olaM
 
 const OlaMapsGeolocation = ({ height, width }) => {
   const dispatch = useDispatch();
-  const { myMap, geolocate } = useSelector((state) => state.olaMapSlice);
+  const { myMap, geolocate } = useSelector((state) => state.OlaMapSlice);
 
   useEffect(() => {
     // Ensure the OlaMaps SDK is loaded
@@ -34,7 +34,7 @@ const OlaMapsGeolocation = ({ height, width }) => {
 
   return (
     <div>
-      <div id="map" style={{ height: height, width: width }} className={`rounded-lg`}></div>
+      <div id="map" className={`rounded-lg w-[${width}] h-[${height}]`}></div>
     </div>
   );
 };

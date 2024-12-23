@@ -1,8 +1,12 @@
 import {configureStore} from "@reduxjs/toolkit"
-import olaMapSlice from "./slice/olaMapSlice"
+import OlaMapSlice from "./slice/olaMapSlice"
+import UserSlice from "./slice/userSlice"
+import HelperSlice from "./slice/helperSlice"
 
 export default configureStore({
     reducer:{
-      olaMapSlice
+      OlaMapSlice,
+      UserSlice,
+      HelperSlice
     }
   })

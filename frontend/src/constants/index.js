@@ -17,3 +17,40 @@ export  const navLinks = [
     },
 
 ]
+
+export  const riderNavLinks = [
+    {
+        path : "",
+        element : "Ride"
+    },
+    {
+        path : "package",
+        element : "Package"
+    },
+    {
+        path : "rentals",
+        element : "Rentals"
+    },
+]
+
+export  const riderProfileLinks = [
+    {
+        path : "wallet",
+        element : "wallet"
+    },
+    {
+        path : "suport",
+        element : "suport"
+    },
+    {
+        path : "setting",
+        element : "setting"
+    },
+    {
+        path : "",
+        element : "logout"
+    },
+]
+
+
+

@@ -4,30 +4,23 @@ import bcrypt from "bcrypt";
 
 const userSchema = new Schema(
     {
-        username: {
+        name: {
             type: String,
-            required: true,
-            unique: true,
-            lowercase: true,
-            trim: true, 
-            index: true
+         
         },
         email: {
             type: String,
-            required: true,
-            unique: true,
-            lowercase: true,
-            trim: true, 
+           
         },
-        fullName: {
+        phoneNo : {
             type: String,
             required: true,
             trim: true, 
             index: true
         },
-        avatar: {
+        picture: {
             type: String, // cloudinary url
-            required: true,
+            default : "",
         },
         coverImage: {
             type: String, // cloudinary url
@@ -37,7 +30,7 @@ const userSchema = new Schema(
         },
         role: {
             type: String,
-            enum: ['driver', 'passenger'],
+            enum: ['driver', 'rider'],
             required: true
         },
         licenseNumber: {
@@ -56,12 +49,6 @@ const userSchema = new Schema(
 );
 
 
-userSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) return next();
-
-    this.password = await bcrypt.hash(this.password, 10);
-    next();
-});
 
 // userSchema.methods.isPasswordCorrect = async function (password) {
 //     return await bcrypt.compare(password, this.password);
@@ -72,8 +59,8 @@ userSchema.methods.generateAccessToken = function () {
         {
             _id: this._id,
             email: this.email,
-            username: this.username,
-            fullName: this.fullName
+            phoneNo: this.phoneNo,
+        
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
