@@ -7,27 +7,27 @@ import About from './pages/About';
 import Login from './pages/Login';
 import OTPverification from './pages/OTPverification';
 import PhoneNO from './pages/PhoneNo';
-
-
-
 import RiderMainLayout from './layout/RiderMainLayout';
 import Ride from './pages/Ride';
-
+import ProtectedRoute from './components/ProtectedRoute'; // Import the ProtectedRoute component
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<MainLayout />}>
-          <Route path='' element={<Home />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/OTPverification' element={<OTPverification />} />
+          <Route path="" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/OTPverification" element={<OTPverification />} />
           <Route path="/about" element={<About />} />
           <Route path="/PhoneNO" element={<PhoneNO />} />
         </Route>
-        <Route path="/rider" element={<RiderMainLayout />}>
-            <Route path='' element={<Ride />} />
-        </Route> 
+        <Route path="/rider" element={<ProtectedRoute />}>
+          <Route element={<RiderMainLayout />}>
+            <Route path="" element={<Ride />} />
+          </Route>
+        </Route>
+        
       </Routes>
     </Router>
   );

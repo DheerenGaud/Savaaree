@@ -18,7 +18,7 @@ const Alert = () => {
         Make me a toast
       </button> */}
       <Toaster
-        position="top-right"
+        position="top-center"
         richColors
         reverseOrder={false}
         gutter={8}

@@ -18,6 +18,7 @@ const UserSlice = createSlice({
     id: null,
     name: null,
     picture: null,
+    isAuthenticated: false,
 
     // loading and error states
     loading: false,
@@ -32,6 +33,10 @@ const UserSlice = createSlice({
     add_User_Profile: (state, action) => {
         Object.assign(state, action.payload);
       },
+    
+    set_User_Authentication :(state, action)=> {
+      state.isAuthenticated = action.payload;
+    }
   },
 
   extraReducers: (builder) => {
@@ -79,6 +84,8 @@ const UserSlice = createSlice({
       })
       .addCase(user_Login_Api.fulfilled, (state, action) => {
         state.loading = false;
+        state.isAuthenticated =  true;
+        // Object.assign(state, action.payload); 
         toast.success(action.payload.message)
       })
       .addCase(user_Login_Api.rejected, (state, action) => {
@@ -95,6 +102,7 @@ const UserSlice = createSlice({
       })
       .addCase(user_Logout_Api.fulfilled, (state, action) => {
         state.loading = false;
+        state.isAuthenticated =  false;
         toast.success(action.payload.message)
       })
       .addCase(user_Logout_Api.rejected, (state, action) => {

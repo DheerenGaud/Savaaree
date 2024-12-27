@@ -155,7 +155,7 @@ function Navbar({ navLinks, riderNavLinks, riderProfileLinks }) {
               />
               {isProfileMenuOpen && (
                 <div
-                  className="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-lg"
+                  className="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-lg z-10"
                   onMouseEnter={() => handleProfileHover(true)} // Keep the menu open when hovering over it
                   onMouseLeave={() => handleProfileHover(false)} // Close the menu after 500ms if not hovered back
                 >

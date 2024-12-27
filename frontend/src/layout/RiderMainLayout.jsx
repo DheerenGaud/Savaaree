@@ -29,15 +29,19 @@ import Alert from '../components/Alert';
         </div>
       ) : (
         // If not loading, show the Outlet (child components)
-        <div className={`bg-primary ${styles.flexStart}`}>
+        <div className={`bg-primary ${styles.paddingX} ${styles.flexCenter}`}>
           <div className={`${styles.boxWidth}`}>
             <Outlet />
           </div>
         </div>
       )}
-
+<div className={`bg-primary ${styles.paddingX} ${styles.flexCenter}`}>
+<div className={`${styles.boxWidth}`}>
 
          <Footer/>
+  </div>
+  </div>
+
     </div>
   )
 }

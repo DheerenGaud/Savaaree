@@ -2,14 +2,15 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { init_Ola_Map, init_My_Map, add_Geo_Location } from "../redux/slice/olaMapSlice.js";
 
-const OlaMapsGeolocation = ({ height, width }) => {
+const OlaMapsGeolocation = () => {
   const dispatch = useDispatch();
   const { myMap, geolocate } = useSelector((state) => state.OlaMapSlice);
-
   useEffect(() => {
+    console.log("he");
+    
     // Ensure the OlaMaps SDK is loaded
     if (window.OlaMapsSDK) {
-      console.log(width);
+      // console.log(width);
 
       if(myMap===null){
         // Initialize Ola Maps
@@ -17,6 +18,11 @@ const OlaMapsGeolocation = ({ height, width }) => {
         // Initialize My Map
         dispatch(init_My_Map({zoom: 25, center: [77.61648476788898, 12.931423492103944]}));
         // adding the My current location
+        dispatch(add_Geo_Location());  
+      }
+      else{
+        
+        dispatch(init_My_Map({zoom: 25, center: [77.61648476788898, 12.931423492103944]}));
         dispatch(add_Geo_Location());  
       }
 
@@ -33,9 +39,9 @@ const OlaMapsGeolocation = ({ height, width }) => {
   }, [geolocate]);
 
   return (
-    <div>
-      <div id="map" className={`rounded-lg w-[${width}] h-[${height}]`}></div>
-    </div>
+  
+      <div id="map"  className="h-full object-cover rounded-xl" ></div>
+ 
   );
 };
 

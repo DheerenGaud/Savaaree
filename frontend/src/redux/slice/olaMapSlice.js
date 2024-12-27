@@ -10,8 +10,10 @@ const OlaMapSlice = createSlice ({
     },
     reducers:{
         init_Ola_Map:(state,action)=>{
+          console.log("init_Ola_Map");
+          
               state.olaMaps = new window.OlaMapsSDK.OlaMaps({
-                apiKey: process.env.REACT_APP_OLA_API_KEY, // Your API key
+                apiKey: process.env.REACT_APP_OLA_API_KEY, 
               });
         },
         init_My_Map:(state,action)=>{
@@ -22,10 +24,11 @@ const OlaMapSlice = createSlice ({
                 center: center, // Initial coordinates
                 zoom:zoom, // Initial zoom level
               });
-             state.zoom = zoom; 
+             state.zoom = zoom;
         }
         ,
         add_Geo_Location:(state,action)=>{
+             state.geolocate=null;
              const geolocate = state.olaMaps.addGeolocateControls({
                 positionOptions: {
                   enableHighAccuracy: true, // Enable high-accuracy location
