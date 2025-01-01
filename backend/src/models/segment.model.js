@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const segmentSchema = new Schema(
     {
-        key: {
+        segment: {
             type: String,
             required: true,
             unique: true,

@@ -2,9 +2,48 @@ import React, { useState } from "react";
 import styles from "../style";
 import GetStarted from "../components/GetStarted";
 import OlaMapsComponent from "../components/OlaMapsComponent";
-import RideFrom from "../components/RideFrom";
+import RideFrom from "../components/RideForm";
 import Modal from "../components/ModalUserSelection";
+
+
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+// API
+import { get_RouteData_Api } from "../api/savaree_api/rider_api";
+import { decodePolyline } from "../util/hleper";
+
+import {add_Polyline_To_Map} from "../redux/slice/olaMapSlice"
+
 function Home() {
+
+  const dispatch = useDispatch();
+  const { selectedLocations } = useSelector((state) => state.UserSlice);
+
+const handaleClick = async () => {
+  console.log("selectedLocations");
+  console.log(selectedLocations);
+  
+      if(selectedLocations&&selectedLocations.pickup&&selectedLocations.dropoff){
+        const result = await dispatch(
+          get_RouteData_Api({
+            source_lat: selectedLocations.pickup.coordinates.lat,
+            source_long: selectedLocations.pickup.coordinates.lng,
+            destination_lat: selectedLocations.dropoff.coordinates.lat,
+            destination_long: selectedLocations.dropoff.coordinates.lng,
+          })
+        );
+        const coordinates = decodePolyline(result.payload.data.routes[0].overview_polyline);
+        console.log(coordinates[0]);
+        dispatch(add_Polyline_To_Map({coordinates,color:"#00040f",width:5}));
+      }
+      else{
+        alert("complete the form")
+      }
+
+    };
+
+
   return (
     <>
   
@@ -55,7 +94,7 @@ function Home() {
  
       <div className={`mt-5 md:hidden ${styles.flexCenter} `}>
     
-        <button className={`w-full ${styles.btnCSS}`}>Submit</button>
+        <button className={`w-full ${styles.btnCSS}`} onClick={handaleClick}>Submit</button>
       
       </div>
     </section>

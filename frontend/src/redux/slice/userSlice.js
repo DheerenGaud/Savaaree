@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { user_SignUp_Api ,user_OTP_Verification_Api ,user_Login_Api , user_Logout_Api} from "../../api/savaree_api/user_api.js";
 import toast  from "react-hot-toast";
 
+import { get_RouteData_Api } from "../../api/savaree_api/rider_api";
 
 const UserSlice = createSlice({
   name: "UserSlice",
@@ -20,6 +21,12 @@ const UserSlice = createSlice({
     picture: null,
     isAuthenticated: false,
 
+
+    selectedLocations:{
+      pickup: null,
+      dropoff: null
+    },
+
     // loading and error states
     loading: false,
     error: null,
@@ -36,12 +43,30 @@ const UserSlice = createSlice({
     
     set_User_Authentication :(state, action)=> {
       state.isAuthenticated = action.payload;
-    }
+    },
+    set_Selected_Locations: (state, action) => {
+      // Updating pickup or dropoff immutably
+      const { type, locationData } = action.payload;
+      
+      if (type === "pickup") {
+        console.log(type, locationData );
+        state.selectedLocations = {
+          ...state.selectedLocations,
+          pickup: locationData,
+        };
+      } else {
+        state.selectedLocations = {
+          ...state.selectedLocations,
+          dropoff: locationData,
+        };
+      }
+    },
+
+
   },
 
   extraReducers: (builder) => {
     builder
-
       // user Sign up 
       .addCase(user_SignUp_Api.pending, (state) => {
         state.loading = true;
@@ -114,6 +139,6 @@ const UserSlice = createSlice({
   },
 });
 
-export const { add_User_Type , add_User_Profile } = UserSlice.actions;
+export const { add_User_Type , add_User_Profile ,set_Selected_Locations,} = UserSlice.actions;
 
 export default UserSlice.reducer;

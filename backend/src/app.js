@@ -29,9 +29,14 @@ import errorHandler from "./middlewares/errorHandler.middlewares.js"; // Path to
 
 
 import userRouter from './routes/user.router.js';
+import riderRouter from './routes/rider.router.js';
+import driverRouter from './routes/rider.router.js';
 
 
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/rider", riderRouter);
+app.use("/api/v1/driver", driverRouter);
+
 
 app.get("/", (req, res) => {
     res.send("hello");

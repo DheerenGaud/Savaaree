@@ -16,27 +16,27 @@ const OlaMapsGeolocation = () => {
         // Initialize Ola Maps
         dispatch(init_Ola_Map());
         // Initialize My Map
-        dispatch(init_My_Map({zoom: 25, center: [77.61648476788898, 12.931423492103944]}));
+        dispatch(init_My_Map({zoom: 5, center: [77.61648476788898, 12.931423492103944]}));
         // adding the My current location
         dispatch(add_Geo_Location());  
       }
       else{
         
-        dispatch(init_My_Map({zoom: 25, center: [77.61648476788898, 12.931423492103944]}));
+        dispatch(init_My_Map({zoom: 5, center: [77.61648476788898, 12.931423492103944]}));
         dispatch(add_Geo_Location());  
       }
 
     }
   }, [dispatch]); // Run once
 
-  useEffect(() => {
-    console.log("Gel location on")
-    if (myMap && geolocate) {
-      myMap.on("load", () => {
-        geolocate.trigger();
-      });
-    }
-  }, [geolocate]);
+  // useEffect(() => {
+  //   console.log("Gel location on")
+  //   if (myMap && geolocate) {
+  //     myMap.on("load", () => {
+  //       // geolocate.trigger();
+  //     });
+  //   }
+  // }, [geolocate]);
 
   return (
   

@@ -41,6 +41,10 @@ const userSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'Vehicle',
             required: function() { return this.role === 'driver'; }
+        },
+        location: {
+            type: locationSchema,
+            required: false, 
         }
     },
     {
@@ -48,6 +52,21 @@ const userSchema = new Schema(
     }
 );
 
+const locationSchema = new Schema({
+    segment: {
+        type: String,
+        required: true, // This can be optional based on your use case
+        trim: true,
+    },
+    lat: {
+        type: Number,
+        required: true,
+    },
+    long: {
+        type: Number,
+        required: true,
+    }
+});
 
 
 // userSchema.methods.isPasswordCorrect = async function (password) {

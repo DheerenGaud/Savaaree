@@ -1,15 +1,18 @@
-import { User } from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
+
+// utilsasyncHandler
 import { generateAccessAndRefereshTokens } from "../utils/user.js";
 import { sendOtp, verifyOtp } from "../utils/otp.js";
 
+// Model
+import { User } from "../models/user.model.js";
 
 
 
 
-const signUp = asyncHandler(async (req, res) => {
+const signUp = (async (req, res) => {
   const { id, phoneNo, email } = req.body;
   
   if ((!id || !email) && !phoneNo) {
