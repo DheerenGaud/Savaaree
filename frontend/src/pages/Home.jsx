@@ -83,8 +83,8 @@ const handaleClick = async () => {
 
 
         <div className="rounded-xl h-[420px] w-full md:h-full md:w-[800px]">
-               {/* <img src="/assets/bg.png" className="object-fill h-full rounded-xl" alt="" /> */}
-               <OlaMapsComponent />
+               { <img src="/assets/bg.png" className="object-fill h-full rounded-xl" alt="" />}
+               {/* <OlaMapsComponent />  */}
         </div>
 
       </div>

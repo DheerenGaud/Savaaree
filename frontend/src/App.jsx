@@ -7,7 +7,7 @@ import About from './pages/About';
 import Login from './pages/Login';
 import OTPverification from './pages/OTPverification';
 import PhoneNO from './pages/PhoneNo';
-
+import Documents from './components/Documents';
 import RiderMainLayout from './layout/RiderMainLayout';
 import Ride from './pages/Rider';
 import ProtectedRoute from './components/ProtectedRoute'; // Import the ProtectedRoute component
@@ -33,7 +33,9 @@ function App() {
         </Route>
         <Route path="/driver" element={<ProtectedRoute />}>
           <Route element={<DriverMainLayOut />}>
-            <Route path="" element={<Ride />} />
+            <Route path="" element={<Documents />} />
+            {/* <Route path="/documents" element={<Documents />} /> */}
+            
           </Route>
         </Route>
         
