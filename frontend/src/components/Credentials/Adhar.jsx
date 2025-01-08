@@ -1,11 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from '../../style';
 
-function Adhar() {
+function Adhar({setPage}) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showUploadContent, setShowUploadContent] = useState(false); // State to toggle content
   const dropdownRef = useRef(null);
-
   // Close dropdown if clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -36,7 +35,7 @@ function Adhar() {
         <div className="flex items-center justify-between h-[70px] bg-discount-gradient sticky top-0 z-10">
           {/* Left content */}
           <div className="flex gap-3 items-center p-3">
-            <p className="text-[30px] font-extrabold text-white cursor-pointer">&larr;</p>
+            <button className="text-[30px] font-extrabold text-white cursor-pointer" onClick={()=>setPage("welcome")}>&larr;</button>
             <img
               src="/assets/SAVAAREE_LOGO.png"
               alt="SAVAAREE Logo"
@@ -76,7 +75,7 @@ function Adhar() {
           {/* Content toggling */}
           {!showUploadContent ? (
             <>
-             <div className="h-[540px]">
+             <div className="">
              <p className="ml-2 text-[24px] font-medium mb-4">
               Let's find your Aadhaar card
               </p>
@@ -100,14 +99,14 @@ function Adhar() {
                     type="text"
                     id="licenseNumber"
                     placeholder="0000 0000 0000 0000"
-                    className="md:p-3 p-2 mt-2 w-[98%] ml-2 mb-4 border border-gray-300 rounded-md text-black focus:ring-2 focus:ring-slate-800"
+                    className="md:p-3 p-2  w-[98%] ml-2  border border-gray-300 rounded-md text-black focus:ring-2 focus:ring-slate-800"
                   />
                 </div>
                
               </div>
-              <div className="mt-5 flex items-center justify-center">
+              <div className="flex items-center justify-center">
                 <p
-                  className="font-medium md:text-[19px] text-[16px] underline mb-9 cursor-pointer"
+                  className="font-medium md:text-[19px] text-[16px] underline  mt-2 mb-2 cursor-pointer"
                   onClick={toggleUploadContent}
                 >
                   Upload document instead
@@ -124,7 +123,7 @@ function Adhar() {
                 <img src="/assets/adhar.jpg" alt="License" className="h-[190px] w-[290px] mt-6 mb-6 object-cover"  />
               </div>
               <div className="mt-5 flex ">
-                <p className="md:text-[18px] text-[16px] m-2 ml-2 md:mb-24 mb-6">
+                <p className="md:text-[18px] text-[16px] m-2 ml-2 ">
                 By sharing your Aadhar details, you hereby confirm that you have shared such detail voluntarily.
                  You further confirm and consent that your Aadhar details may be shared by Uber with relevant 
                  Government authorities for the purposes provided herein.
@@ -144,7 +143,7 @@ function Adhar() {
               </button>
               </div>
               <div>
-              <button className="text-white text-[16px] w-full font-poppins font-medium text-[18px] bg-gray-700 rounded-xl p-5 hover:bg-slate-600">
+              <button className="text-white  w-full font-poppins font-medium text-[18px] bg-gray-700 rounded-xl p-5 hover:bg-slate-600">
                 Use My Phone
               </button>
               </div>

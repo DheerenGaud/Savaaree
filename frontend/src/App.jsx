@@ -34,7 +34,7 @@ function App() {
         </Route>
         <Route path="/driver" element={<ProtectedRoute />}>
           <Route element={<DriverMainLayOut />}>
-            <Route path="" element={<Documents />} />
+            <Route path="document" element={<Documents />} />
             
             
           </Route>

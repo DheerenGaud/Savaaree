@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
-function Profile1() {
+function Profile({setPage}) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showUploadContent, setShowUploadContent] = useState(false); // State to toggle content
   const dropdownRef = useRef(null);
@@ -35,8 +35,8 @@ function Profile1() {
         <div className="flex items-center justify-between h-[70px] bg-discount-gradient sticky top-0 z-10">
           {/* Left content */}
           <div className="flex gap-3 items-center p-3">
-            <p className="text-[30px] font-extrabold text-white cursor-pointer">&larr;</p>
-            <img
+          <button className="text-[30px] font-extrabold text-white cursor-pointer" onClick={()=>setPage("welcome")}>&larr;</button>
+          <img
               src="/assets/SAVAAREE_LOGO.png"
               alt="SAVAAREE Logo"
               className="h-[27px] w-[130px]"
@@ -75,7 +75,7 @@ function Profile1() {
           {/* Content toggling */}
           
             
-            <div className="md:h-[600px] h-[450px]">
+            <div className="md:h-[400px] h-[350px]">
                 <div className="flex gap-4 ml-2 mb-4 mt-2">
                <div>
                 watch
@@ -105,4 +105,4 @@ function Profile1() {
   );
 }
 
-export default Profile1;
+export default Profile;

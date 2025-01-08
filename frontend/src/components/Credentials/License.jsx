@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from '../../style';
 
-function License() {
+function License({setPage}) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showUploadContent, setShowUploadContent] = useState(false); // State to toggle content
   const dropdownRef = useRef(null);
@@ -36,8 +36,8 @@ function License() {
         <div className="flex items-center justify-between h-[70px] bg-discount-gradient sticky top-0 z-10">
           {/* Left content */}
           <div className="flex gap-3 items-center p-3">
-            <p className="text-[30px] font-extrabold text-white cursor-pointer">&larr;</p>
-            <img
+          <button className="text-[30px] font-extrabold text-white cursor-pointer" onClick={()=>setPage("welcome")}>&larr;</button>
+          <img
               src="/assets/SAVAAREE_LOGO.png"
               alt="SAVAAREE Logo"
               className="h-[27px] w-[130px]"

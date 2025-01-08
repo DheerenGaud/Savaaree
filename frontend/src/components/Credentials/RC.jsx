@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from '../../style';
 
-function RC() {
+function RC({setPage}) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showUploadContent, setShowUploadContent] = useState(false); // State to toggle content
   const dropdownRef = useRef(null);
@@ -36,8 +36,8 @@ function RC() {
         <div className="flex items-center justify-between h-[70px] bg-discount-gradient sticky top-0 z-10">
           {/* Left content */}
           <div className="flex gap-3 items-center p-3">
-            <p className="text-[30px] font-extrabold text-white cursor-pointer">&larr;</p>
-            <img
+          <button className="text-[30px] font-extrabold text-white cursor-pointer" onClick={()=>setPage("welcome")}>&larr;</button>
+          <img
               src="/assets/SAVAAREE_LOGO.png"
               alt="SAVAAREE Logo"
               className="h-[27px] w-[130px]"
@@ -76,7 +76,7 @@ function RC() {
           {/* Content toggling */}
           {!showUploadContent ? (
             <>
-            <div className="md:h-[600px]">
+            <div className="">
             <p className="ml-2 md:text-[24px] text-[20px] font-medium mb-5">
               Let’s find your Registration Certificate (RC)
               </p>
@@ -117,15 +117,15 @@ function RC() {
             </>
           ) : (
             <>
-         <div className="h-[540px]">
+         <div className="">
          <p className="ml-3 md:text-[29px] font-medium mb-4 text-[20px]">
          Take a photo of your Registration Certificate (RC)
               </p>
               <div className="flex justify-center">
                 <img src="/assets/rc.jpg" alt="rc" className="md:h-[230px] md:w-[350px] w-[300px] mt-4 mb-2 object-cover"  />
               </div>
-              <div className="mt-5 flex ">
-                <p className="md:text-[18px] md:mr-2 m-0 ml-4 md:mb-24 mb-4 text-[16px]">
+              <div className=" flex mt-2  mb-2">
+                <p className="md:text-[18px] md:mr-2 m-0 ml-4 text-[16px]">
                 If the vehicle owner name on the vehicle documents is different from mine, then I hereby confirm that I have
                  the vehicle owner's consent to drive this vehicle on the Uber Platform. This declaration can be treated as
                   a No-Objection Certificate and releases Uber from any legal obligations and consequences.
