@@ -179,6 +179,18 @@
   background-repeat: no-repeat; /* Prevents tiling */
   top: 10px;
 }
+.marker-label {
+  /* background-color: white; */
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 4 15 / var(--tw-bg-opacity, 1));
+
+  padding: 4px 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-size: 14px;
+  color: rgb(255, 255, 255);
+  white-space: nowrap;
+}
 
 .autoSearch {
   display: -webkit-box;

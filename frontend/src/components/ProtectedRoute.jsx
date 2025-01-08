@@ -4,10 +4,10 @@ import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedRoute = () => {
-  const isAuthenticated = useSelector((state) => state.UserSlice.isAuthenticated); 
+  const isAuthenticated = document.cookie.includes("authenticated"); 
 
   if (!isAuthenticated) {
-    // return <Navigate to="/" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;

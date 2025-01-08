@@ -40,7 +40,7 @@ const fetchRouteData = asyncHandler(async (req, res) => {
 
 
 const DriverAroundLatLong = asyncHandler(async (req, res) => {
-    const { lat, long } = req.body;
+    const { lat, long , path } = req.body;
 
     try {
         if (!lat || !long) {

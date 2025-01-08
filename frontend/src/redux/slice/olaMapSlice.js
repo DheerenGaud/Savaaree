@@ -12,6 +12,9 @@ const OlaMapSlice = createSlice ({
         olaMaps:null,
         geolocate :null,
         myMap:null,
+
+        pickupMarker :null,
+        dropMarker :null
     },
     reducers:{
         init_Ola_Map:(state,action)=>{
@@ -45,6 +48,73 @@ const OlaMapSlice = createSlice ({
               state.geolocate = geolocate 
               state.myMap.addControl(geolocate);
         }
+        ,
+        set_Locations_On_MAP: (state, action) => {
+          const { type, coordinates, name } = action.payload;
+          
+          // Create custom markers
+          var customMarker_Start = document.createElement('div');
+          customMarker_Start.classList.add('customMarkerClass_Start');
+      
+          var customMarker_End = document.createElement('div');
+          customMarker_End.classList.add('customMarkerClass_End');
+          
+          // Create label marker
+          var labelMarker = document.createElement('div');
+          labelMarker.classList.add('marker-label');
+          labelMarker.textContent = name.length > 25 ? name.substring(0, 25) + "..." : name;
+      
+          const lngLatArray = [coordinates.lng, coordinates.lat];
+          
+          // Remove previous markers if they exist
+          if (type === 'pickup') {
+              if (state.pickupMarker) {
+                  state.pickupMarker.remove();
+              }
+              if (state.pickupLabel) {
+                  state.pickupLabel.remove();
+              }
+              
+              // Add main marker
+              state.pickupMarker = state.olaMaps
+                  .addMarker({ element: customMarker_Start, offset: [0, -10], anchor: 'bottom' })
+                  .setLngLat(lngLatArray)
+                  .addTo(state.myMap);
+                  
+              // Add label marker (slightly offset to the right)
+              state.pickupLabel = state.olaMaps
+                  .addMarker({ element: labelMarker, offset: [5, 0], anchor: 'left' })
+                  .setLngLat(lngLatArray)
+                  .addTo(state.myMap);
+      
+          } else {
+              if (state.dropMarker) {
+                  state.dropMarker.remove();
+              }
+              if (state.dropLabel) {
+                  state.dropLabel.remove();
+              }
+              
+              // Add main marker
+              state.dropMarker = state.olaMaps
+                  .addMarker({ element: customMarker_End, offset: [0, -10], anchor: 'bottom' })
+                  .setLngLat(lngLatArray)
+                  .addTo(state.myMap);
+                  
+              // Add label marker (slightly offset to the right)
+              state.dropLabel = state.olaMaps
+                  .addMarker({ element: labelMarker, offset: [5, 0], anchor: 'left' })
+                  .setLngLat(lngLatArray)
+                  .addTo(state.myMap);
+          }
+      
+          // Update map center and zoom level
+          if (coordinates) {
+              state.myMap.setCenter(lngLatArray);
+              state.myMap.setZoom(12);
+          }
+      }
+  
         ,
         add_Polyline_To_Map:(state,action)=>{
           
@@ -81,31 +151,8 @@ const OlaMapSlice = createSlice ({
                   "line-color": color,
                   "line-width": width,
                 },
-              });
-              var customMarker_Start = document.createElement('div')
-              customMarker_Start.classList.add('customMarkerClass_Start')
-
-              var customMarker_End = document.createElement('div')
-              customMarker_End.classList.add('customMarkerClass_End')
-    
-              state.olaMaps
-                 .addMarker({element: customMarker_Start, offset: [0, -10], anchor: 'bottom' })
-                 .setLngLat(coordinates[0])
-                 .addTo(state.myMap)
-
-              state.olaMaps
-                 .addMarker({element: customMarker_End, offset: [0, -10], anchor: 'bottom' })
-                 .setLngLat(coordinates[coordinates.length - 1])
-                 .addTo(state.myMap)
-
-              if (coordinates && coordinates.length > 0) {
-                state.myMap.setCenter(coordinates[0]);
-                state.myMap.setZoom(12); // You can adjust this zoom level as needed
+              });       
             }
-             
-
-
-        }
     },
     extraReducers: (builder) => {
       builder
@@ -129,6 +176,6 @@ const OlaMapSlice = createSlice ({
 })
 
 
-export const {init_Ola_Map,init_My_Map,add_Polyline_To_Map,add_Geo_Location} = OlaMapSlice.actions
+export const {init_Ola_Map,init_My_Map,add_Polyline_To_Map,add_Geo_Location,set_Locations_On_MAP} = OlaMapSlice.actions
 
 export default OlaMapSlice.reducer

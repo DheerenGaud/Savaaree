@@ -110,7 +110,7 @@ function Navbar({ navLinks, riderNavLinks, riderProfileLinks }) {
         </ul>
       </div>
 
-      <ul className="list-none flex justify-end items-center flex-1">
+      <ul className="list-none flex justify-end items-center ">
         {!riderProfileLinks && (
           <>
             <li className="font-poppins font-normal cursor-pointer text-[16px] text-white">
@@ -197,7 +197,7 @@ function Navbar({ navLinks, riderNavLinks, riderProfileLinks }) {
         <div
           className={`${
             toggle ? "flex" : "hidden"
-          } p-6 bg-black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[120px] rounded-xl sidebar`}
+          } p-6 bg-black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[120px] rounded-xl sidebar z-10`}
         >
           <ul className="list-none flex flex-col justify-end items-center flex-1">
             {navLinks &&

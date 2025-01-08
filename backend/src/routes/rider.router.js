@@ -6,7 +6,7 @@ import {fetchRouteData,DriverAroundLatLong} from "../controllers/rider.controlle
 const router = Router()
 
 
-router.route("/RouteData").post(verifyJWT,fetchRouteData)
+router.route("/RouteData").post(fetchRouteData)
 router.route("/DriverAroundLatLong").post(verifyJWT,DriverAroundLatLong)
 
 export default router

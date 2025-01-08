@@ -19,7 +19,7 @@ const UserSlice = createSlice({
     id: null,
     name: null,
     picture: null,
-    isAuthenticated: false,
+    
 
 
     selectedLocations:{
@@ -41,9 +41,7 @@ const UserSlice = createSlice({
         Object.assign(state, action.payload);
       },
     
-    set_User_Authentication :(state, action)=> {
-      state.isAuthenticated = action.payload;
-    },
+   
     set_Selected_Locations: (state, action) => {
       // Updating pickup or dropoff immutably
       const { type, locationData } = action.payload;
@@ -61,6 +59,19 @@ const UserSlice = createSlice({
         };
       }
     },
+
+    set_Alert:(state, action)=>{
+        const {type,msg}=action.payload
+        if(type==="success"){
+          toast.success(msg)
+        }
+        else if(type==="error"){
+          toast.error(msg)
+        }
+        else if(type==="pending"){
+          state.loading = true;
+        }
+    }
 
 
   },
@@ -109,7 +120,6 @@ const UserSlice = createSlice({
       })
       .addCase(user_Login_Api.fulfilled, (state, action) => {
         state.loading = false;
-        state.isAuthenticated =  true;
         // Object.assign(state, action.payload); 
         toast.success(action.payload.message)
       })
@@ -127,7 +137,6 @@ const UserSlice = createSlice({
       })
       .addCase(user_Logout_Api.fulfilled, (state, action) => {
         state.loading = false;
-        state.isAuthenticated =  false;
         toast.success(action.payload.message)
       })
       .addCase(user_Logout_Api.rejected, (state, action) => {
@@ -139,6 +148,6 @@ const UserSlice = createSlice({
   },
 });
 
-export const { add_User_Type , add_User_Profile ,set_Selected_Locations,} = UserSlice.actions;
+export const { add_User_Type , add_User_Profile ,set_Selected_Locations,set_Alert} = UserSlice.actions;
 
 export default UserSlice.reducer;

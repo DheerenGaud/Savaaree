@@ -2,6 +2,23 @@ import mongoose, { Schema } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
+const locationSchema = new Schema({
+    segment: {
+        type: String,
+        required: true, // This can be optional based on your use case
+        trim: true,
+    },
+    lat: {
+        type: Number,
+        required: true,
+    },
+    long: {
+        type: Number,
+        required: true,
+    }
+});
+
+
 const userSchema = new Schema(
     {
         name: {
@@ -45,6 +62,11 @@ const userSchema = new Schema(
         location: {
             type: locationSchema,
             required: false, 
+        },
+        currentRide:{
+            type: Schema.Types.ObjectId,
+            ref: 'Ride',
+            default:null
         }
     },
     {
@@ -52,21 +74,6 @@ const userSchema = new Schema(
     }
 );
 
-const locationSchema = new Schema({
-    segment: {
-        type: String,
-        required: true, // This can be optional based on your use case
-        trim: true,
-    },
-    lat: {
-        type: Number,
-        required: true,
-    },
-    long: {
-        type: Number,
-        required: true,
-    }
-});
 
 
 // userSchema.methods.isPasswordCorrect = async function (password) {

@@ -12,37 +12,49 @@ import { User } from "../models/user.model.js";
 
 
 
-const signUp = (async (req, res) => {
+const signUp = asyncHandler(async (req, res) => {
   const { id, phoneNo, email } = req.body;
-  
-  if ((!id || !email) && !phoneNo) {
-    throw new ApiError(400, "Both email and phone number are required.");
-  }
-  const existingUser = await User.findOne({
-    $or: [{ phoneNo }, { email }],
-  });
-  if (existingUser) {
-    throw new ApiError(
-      409,
-      "User with the provided email or phone number already exists."
-    );
-  }
-  if (phoneNo) {
-    try {
+
+  try {
+     if ((!id || !email) && !phoneNo) {
+      throw new ApiError(400, "Either email or phone number is required.");
+    }
+    
+    
+    // Check if a user with the same email or phone number already exists
+    const existingUser = await User.findOne({
+      $or: [{ phoneNo }, { email }],
+    });
+    
+    if (existingUser) {
+      throw new ApiError(
+        409,
+        "User with the provided email or phone number already exists."
+      );
+    }
+
+    // Send OTP if phone number is provided
+    if (phoneNo) {
       await sendOtp(phoneNo, 360, "register");
       return res
         .status(201)
-        .json(new ApiResponse(200, null, "OTP sent successfully."));
-    } catch (error) {
-      throw new ApiError(
-        error.statusCode || 500,
-        error.message || "Failed to send OTP.",
-        [],
-        error.stack
-      );
+        .json(
+          new ApiResponse(200, null, "OTP sent successfully.")
+        );
     }
+
+    // Handle the case where neither phoneNo nor other valid data exists
+    throw new ApiError(400, "Phone number is required for registration.");
+  } catch (error) {
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Failed to send OTP.",
+      [],
+      error.stack
+    );
   }
 });
+
 
 const OTP_verification = asyncHandler(async (req, res) => {
   const { otp, phoneNo, OTPtype } = req.body;
@@ -132,6 +144,7 @@ const login = asyncHandler(async (req, res) => {
       .status(200)
       .cookie("accessToken", accessToken, cookieOptions)
       .cookie("refreshToken", refreshToken, cookieOptions)
+      .cookie("authenticated",true)
       .json(
         new ApiResponse(
           200,
@@ -171,6 +184,7 @@ const logout = asyncHandler(async(req, res) => {
   .status(200)
   .clearCookie("accessToken", options)
   .clearCookie("refreshToken", options)
+  .clearCookie("authenticated")
   .json(new ApiResponse(200, {}, "User logged Out"))
 })
 
