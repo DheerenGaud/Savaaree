@@ -13,7 +13,7 @@ import { User } from "../models/user.model.js";
 
 
 const signUp = asyncHandler(async (req, res) => {
-  const { id, phoneNo, email } = req.body;
+  const { id, phoneNo, email  ,role} = req.body;
 
   try {
      if ((!id || !email) && !phoneNo) {
@@ -24,6 +24,9 @@ const signUp = asyncHandler(async (req, res) => {
     // Check if a user with the same email or phone number already exists
     const existingUser = await User.findOne({
       $or: [{ phoneNo }, { email }],
+      $and:[
+        {role:role}
+     ]
     });
     
     if (existingUser) {
@@ -107,11 +110,15 @@ const OTP_verification = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
-  const { phoneNo,email,id } = req.body;
+  const { phoneNo,email,id ,role} = req.body;
   
   try {
     if (!email && !phoneNo) {
       throw new ApiError(400, "Either email or phone number is required.");
+    }
+    if(!role){
+      console.log(role); 
+      throw new ApiError(400, "role is not selected");
     }
     const user = await User.findOne({
       $or: [
@@ -119,6 +126,9 @@ const login = asyncHandler(async (req, res) => {
         { phoneNo: phoneNo },
         { id: id }
       ],
+      $and:[
+         {role:role}
+      ]
     });
 
     if (!user) {
@@ -188,4 +198,20 @@ const logout = asyncHandler(async(req, res) => {
   .json(new ApiResponse(200, {}, "User logged Out"))
 })
 
-export { login, signUp, OTP_verification,logout };
+const userData = asyncHandler(async(req, res) => {
+  
+  try {
+      const user = req.user;
+      if(user){
+        return res
+        .status(201)
+        .json(
+          new ApiResponse(200, user)
+        );
+      }
+  } catch (error) {
+    throw new ApiError(error.statusCode || 500, error.message || "Login failed.", [],error.stack )
+  }
+})
+
+export { login, signUp, OTP_verification,logout ,userData};

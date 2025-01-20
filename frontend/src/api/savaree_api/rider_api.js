@@ -6,14 +6,25 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL + "/api/v1/rider";
 export const get_RouteData_Api = createAsyncThunk("get_RouteData_Api", async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${BACKEND_URL}/RouteData`, data,{withCredentials:true});
-      console.log("SignUp API Response:", response);
   
       return response.data;
-    } catch (err) {
-      // console.log(err);
-      
+    } catch (err) {     
       const errorMessage = err.response?.data || "An unknown error occurred.";
-      // console.error("Error in SignUp API:", err.response?.data); // For debugging
       return rejectWithValue(errorMessage);
     }
   });
+
+
+export const get_Driver_For_Route = createAsyncThunk("get_Driver_For_Route", async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/getDriverForRoute`, data,{withCredentials:true});
+  
+      return response.data;
+    } catch (err) {     
+      const errorMessage = err.response?.data || "An unknown error occurred.";
+      return rejectWithValue(errorMessage);
+    }
+  });
+
+
+  

@@ -14,11 +14,11 @@ const OlaMapSlice = createSlice ({
         myMap:null,
 
         pickupMarker :null,
-        dropMarker :null
+        dropMarker :null,
+        path:null
     },
     reducers:{
         init_Ola_Map:(state,action)=>{
-          console.log("init_Ola_Map");
           
               state.olaMaps = new window.OlaMapsSDK.OlaMaps({
                 apiKey: process.env.REACT_APP_OLA_API_KEY, 
@@ -119,7 +119,6 @@ const OlaMapSlice = createSlice ({
         add_Polyline_To_Map:(state,action)=>{
           
           const {coordinates,color,width} =  action.payload
-          console.log( state.myMap);
           if (state.myMap.getLayer('route')) {
             state.myMap.removeLayer('route');
         }
@@ -164,8 +163,8 @@ const OlaMapSlice = createSlice ({
       })
       .addCase(get_RouteData_Api.fulfilled, (state, action) => {
         // state.loading = false;
-        console.log(action.payload.data);
         toast.success(action.payload.message)
+        state.path = action.payload.data.routes[0].overview_polyline
       })
       .addCase(get_RouteData_Api.rejected, (state, action) => {
         // state.loading = false;

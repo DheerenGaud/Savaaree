@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { user_SignUp_Api ,user_OTP_Verification_Api ,user_Login_Api , user_Logout_Api} from "../../api/savaree_api/user_api.js";
+import { user_SignUp_Api ,user_OTP_Verification_Api ,user_Login_Api , user_Logout_Api ,user_Data_Api} from "../../api/savaree_api/user_api.js";
 import toast  from "react-hot-toast";
 
 import { get_RouteData_Api } from "../../api/savaree_api/rider_api";
@@ -47,7 +47,6 @@ const UserSlice = createSlice({
       const { type, locationData } = action.payload;
       
       if (type === "pickup") {
-        console.log(type, locationData );
         state.selectedLocations = {
           ...state.selectedLocations,
           pickup: locationData,
@@ -125,7 +124,6 @@ const UserSlice = createSlice({
       })
       .addCase(user_Login_Api.rejected, (state, action) => {
         state.loading = false;
-        console.log(action.payload);
         toast.error(action.payload.message)
         state.error = action.payload.message; // Assuming the thunk passes the error message via `rejectWithValue`
       })
@@ -140,6 +138,20 @@ const UserSlice = createSlice({
         toast.success(action.payload.message)
       })
       .addCase(user_Logout_Api.rejected, (state, action) => {
+        state.loading = false;
+        toast.error(action.payload.message)
+        state.error = action.payload.message; // Assuming the thunk passes the error message via `rejectWithValue`
+      })
+
+      .addCase(user_Data_Api.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(user_Data_Api.fulfilled, (state, action) => {
+        state.loading = false;
+        Object.assign(state, action.payload.data); 
+      })
+      .addCase(user_Data_Api.rejected, (state, action) => {
         state.loading = false;
         console.log(action.payload);
         toast.error(action.payload.message)

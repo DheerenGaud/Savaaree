@@ -38,7 +38,6 @@ const RideForm = () => {
       selectedLocations.current.pickup &&
       selectedLocations.current.dropoff
     ) {
-      console.log( selectedLocations.current);
       
       const result = await dispatch(
         get_RouteData_Api({
@@ -48,7 +47,6 @@ const RideForm = () => {
           destination_long: selectedLocations.current.dropoff.coordinates.lng,
         })
       );
-      console.log(result.payload);
       if(result.payload.data){
         const coordinates = decodePolyline(result.payload.data.routes[0].overview_polyline);
         dispatch(add_Polyline_To_Map({ coordinates, color: "#00040f", width: 5 }));

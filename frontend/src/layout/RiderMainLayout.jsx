@@ -12,7 +12,7 @@ import Alert from '../components/Alert';
  
  function RiderMainLayout() {
   const { loading } = useSelector((state) => state.UserSlice);
-
+  
   return (
     <div className="bg-primary w-full overflow-hidden">
           <Alert/>

@@ -29,7 +29,7 @@ function Login() {
 
   const dispatch = useDispatch();
   const {navigateTo} = useSelector((state) => state.HelperSlice);
-  const { email, phoneNo  } = useSelector((state) => state.UserSlice);
+  const { email, phoneNo , role } = useSelector((state) => state.UserSlice);
   
   
   const [user, setUser] = useState(null);
@@ -62,9 +62,14 @@ function Login() {
           if(navigateTo=="login"){     
             console.log(email);
              
-            const result = await dispatch(user_Login_Api({email:res.data.email}));
+            const result = await dispatch(user_Login_Api({email:res.data.email, role:role}));
               if(result.payload.success){
+                if (role==="rider") {
                   navigate("/rider");
+                }
+                else{
+                  navigate("/driver");
+                }
                }
          }
          else{
@@ -121,9 +126,14 @@ function Login() {
         
         dispatch(add_User_Profile({email:inputValue}))
         if(navigateTo=="login"){      
-          const result = await dispatch(user_Login_Api({email:inputValue}));
+          const result = await dispatch(user_Login_Api({email:inputValue, role:role}));
             if(result.payload.success){
+              if (role==="rider") {
                 navigate("/rider");
+              }
+              else{
+                navigate("/driver");
+              }
              }
        }
        else{
@@ -137,13 +147,18 @@ function Login() {
         setInputValue("")
         dispatch(add_User_Profile({phoneNo:countyCode + phoneNumber}))
         if(navigateTo=="login"){      
-          const result = await dispatch(user_Login_Api({phoneNo:countyCode + phoneNumber}));
+          const result = await dispatch(user_Login_Api({phoneNo:countyCode + phoneNumber, role:role}));
             if(result.payload.success){
+              if (role==="rider") {
                 navigate("/rider");
+              }
+              else{
+                navigate("/driver");
+              }
              }
        }
        else{
-        const result = await dispatch(user_SignUp_Api({ phoneNo:countyCode + phoneNumber  }));
+        const result = await dispatch(user_SignUp_Api({ phoneNo:countyCode + phoneNumber  , role:role}));
         if(result.payload.success){
           navigate("/OTPverification");
        }

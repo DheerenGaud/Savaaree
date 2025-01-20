@@ -1,7 +1,8 @@
 // ProtectedRoute.js
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
+
 
 const ProtectedRoute = () => {
   const isAuthenticated = document.cookie.includes("authenticated"); 
@@ -9,6 +10,7 @@ const ProtectedRoute = () => {
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
   }
+
 
   return <Outlet />;
 };

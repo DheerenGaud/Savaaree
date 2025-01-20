@@ -13,13 +13,16 @@ import {  } from "../util/hleper";
 
 import {} from "../redux/slice/olaMapSlice"
 import {set_Alert} from "../redux/slice/userSlice"
+import { get_Driver_For_Route } from "../api/savaree_api/rider_api.js";
 
 function Ride() {
-  const dispatch = useDispatch();
-
+   const { path } = useSelector((state) => state.OlaMapSlice);
+   const { selectedLocations } = useSelector((state) => state.UserSlice);
+   const dispatch = useDispatch();
+ 
 const handaleClick = async () => {
-
-      
+    console.log({path,selectedLocations});
+    dispatch(get_Driver_For_Route({path,selectedLocations}))
 
 };
 

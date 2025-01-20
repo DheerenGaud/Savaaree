@@ -39,7 +39,7 @@ const fetchRouteData = asyncHandler(async (req, res) => {
 });
 
 
-const DriverAroundLatLong = asyncHandler(async (req, res) => {
+const driverAroudLatLong = asyncHandler(async (req, res) => {
     const { lat, long , path } = req.body;
 
     try {
@@ -119,10 +119,81 @@ const DriverAroundLatLong = asyncHandler(async (req, res) => {
         );
     }
 });
+const getDriverForRoute = asyncHandler(async (req, res) => {
+    const { selectedLocations, path } = req.body;
+    const {pickup,dropoff} = selectedLocations
+    console.log(req.body);
+try {
+    
+        //fide segment from (pickup: null,dropoff: null)
+        const segment = getSegment(pickup.lat, pickup.long, 7);
+    
+        // find all neighborSegment
+        const neighborSegments = [segment, ...getNeighbours(segment)];
+    
+    
+        // find all drivers 
+        neighborSegments.forEach(async(seg) => {
+            const drivers = Segment.aggregate([
+                {
+                    $match:{
+                        segment:seg
+                    }
+                },
+                {  
+                    $lookup: {
+                        from: "users", // The collection to join with
+                        localField: "drivers", // The field in the `posts` collection
+                        foreignField: "_id", // The field in the `users` collection
+                        as: "DriverDetails" // The output array field
+                    }
+                },
+                {
+                     $unwind:{
+                        path:"DriverDetails",
+                        preserveNullAndEmptyArrays: false // Remove unmatched authors immediately
+                     }
+                },
+                {
+                    $match: {
+                        "DriverDetails.currentRide": { $ne: null } // Only include authors with `name` not null
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "vehicles", // Join with the `vehicles` collection to get vehicle details
+                        localField: "DriverDetails.vehicleDetails", // Field in `users` collection
+                        foreignField: "_id", // Field in `vehicles` collection
+                        as: "DriverDetails.vehicleDetails" // Output field for vehicle details
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "rides", // Join with the `vehicles` collection to get vehicle details
+                        localField: "DriverDetails.vehicleDetails", // Field in `users` collection
+                        foreignField: "_id", // Field in `vehicles` collection
+                        as: "DriverDetails.vehicleDetails" // Output field for vehicle details
+                    }
+                },
+                {
+                    $project:{
+                        "DriverDetails.name":1,
+                        "DriverDetails.name":1,
+                        "DriverDetails.name":1,
+
+                    }
+                }
+            ])
+        });
+    
+} catch (error) {
+    
+}
+});
 
 
 export{
-    fetchRouteData , DriverAroundLatLong
+    fetchRouteData , getDriverForRoute
 }
 
 

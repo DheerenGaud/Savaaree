@@ -26,8 +26,7 @@ const vehicleSchema = new Schema(
         driver: {
             type: Schema.Types.ObjectId,
             ref: 'User',
-            required: true
-        }
+        }, 
     },
     {
         timestamps: true

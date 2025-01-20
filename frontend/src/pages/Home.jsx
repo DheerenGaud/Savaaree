@@ -23,7 +23,6 @@ function Home() {
   const isAuthenticated =  document.cookie.includes("authenticated"); 
 const handaleClick = async () => {
   console.log("selectedLocations");
-  console.log(selectedLocations);
   
       if(isAuthenticated){
        

@@ -15,7 +15,7 @@ function PhoneNO() {
   const [countryCode, setCountryCode] = useState('+91');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { email, phoneNo, id } = useSelector((state) => state.UserSlice);
+  const { email, phoneNo, id, role } = useSelector((state) => state.UserSlice);
 
   // Handle phone number input change
 
@@ -50,7 +50,7 @@ function PhoneNO() {
         // Update user profile with phone number
           dispatch(add_User_Profile({ phoneNo: fullPhoneNumber }));
           
-          const result = await dispatch(user_SignUp_Api({ email, phoneNo: fullPhoneNumber, id }));
+          const result = await dispatch(user_SignUp_Api({ email, phoneNo: fullPhoneNumber, id ,role}));
           if(result.payload.success){
              navigate("/OTPverification");
           }

@@ -57,7 +57,7 @@ const sendOtp = async (phoneNumber, expiryTimeInSeconds = 300, type) => {
 
 
 const verifyOtp = async (phoneNumber,userOtp,type) => {
-  console.log(phoneNumber,userOtp,type);
+  // console.log(phoneNumber,userOtp,type);
   
   try {
     const otpDocument = await OtpModel.findOne({ phoneNumber,otp:userOtp,type });

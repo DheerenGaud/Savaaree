@@ -1,5 +1,4 @@
 export const decodePolyline =  (encoded) => {
-    console.log(encoded);
     
     const poly = [];
     let index = 0,
