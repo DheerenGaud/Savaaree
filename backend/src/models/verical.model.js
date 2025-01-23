@@ -4,24 +4,27 @@ const vehicleSchema = new Schema(
     {
         make: {
             type: String,
-            required: true
+            // required: true
         },
         model: {
             type: String,
-            required: true
+            // required: true
         },
         year: {
             type: Number,
-            required: true
+            // required: true
         },
+        carImages:[{
+            type:String
+        }],
         color: {
             type: String,
-            required: true
+            // required: true
         },
         licensePlate: {
             type: String,
-            required: true,
-            unique: true
+            // required: true,
+            // unique: true
         },
         driver: {
             type: Schema.Types.ObjectId,

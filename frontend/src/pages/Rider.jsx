@@ -35,11 +35,14 @@ const handaleClick = async () => {
     >
       <div className="md:flex   md:justify-between gap-x-10 ">
         <div className=" w-full sm:w-[30%] ">
+          
           <RideFrom />
+
+          
         </div>
         <div className="rounded-xl h-[420px] w-full md:h-full md:w-[1000px]">
-          {/* <img src="/assets/bg.png" className="object-fill h-full rounded-xl" alt="" /> */}
-          <OlaMapsComponent />
+          <img src="/assets/bg.png" className="object-fill h-full rounded-xl" alt="" />
+          {/* <OlaMapsComponent /> */}
         </div>
         <div
           className="absolute w-[30%] h-[35%] top-0 pink__gradient"

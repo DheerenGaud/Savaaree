@@ -4,7 +4,7 @@ const documentSchema = new Schema(
   {
     licenceNo: {
       type: Number,
-      unique: true, 
+      // unique: true, 
     },
     dob: {
       type: String, 
