@@ -15,6 +15,8 @@ import {} from "../redux/slice/olaMapSlice"
 import {set_Alert} from "../redux/slice/userSlice"
 import { get_Driver_For_Route } from "../api/savaree_api/rider_api.js";
 
+import ChooseRides from "../components/ChooseRides.jsx";
+
 function Ride() {
    const { path } = useSelector((state) => state.OlaMapSlice);
    const { selectedLocations } = useSelector((state) => state.UserSlice);
@@ -31,16 +33,29 @@ const handaleClick = async () => {
   return (
     <section
       id="rider"
-      className={`flex md:flex-row flex-col  py-6 md:h-[600px] `}
+      className={`flex md:flex-row flex-col  py-6 md:h-[700px] `}
     >
-      <div className="md:flex   md:justify-between gap-x-10 ">
-        <div className=" w-full sm:w-[30%] ">
+      <div className="md:flex   md:justify-between gap-x-6 ">
+        <div className=" w-full hidden md:block sm:w-[30%] ">
           <RideFrom />
         </div>
-        <div className="rounded-xl h-[420px] w-full md:h-full md:w-[1000px]">
-          {/* <img src="/assets/bg.png" className="object-fill h-full rounded-xl" alt="" /> */}
-          <OlaMapsComponent />
+        <div className="flex flex-col md:flex-row gap-x-6">
+          {/* Image comes first on mobile and second on desktop */}
+          <div className="rounded-xl h-[170px]  md:h-full md:w-[650px] order-1 md:order-2">
+            {/* <img
+              src="/assets/mappp.jpg"
+              className="object-fill h-full w-[500px]"
+              alt="Map"
+            /> */}
+            <OlaMapsComponent /> 
+          </div>
+
+          {/* ChooseRide comes second on mobile and first on desktop */}
+          <div className="order-2 md:order-1">
+            <ChooseRides />
+          </div>
         </div>
+       
         <div
           className="absolute w-[30%] h-[35%] top-0 pink__gradient"
           style={{ pointerEvents: "none" }}
@@ -49,11 +64,11 @@ const handaleClick = async () => {
           className="absolute w-[65%] h-[65%] rounded-full white__gradient bottom-40"
           style={{ pointerEvents: "none" }}
         />
-        <div className={`mt-5 md:hidden ${styles.flexCenter} `}>
+        {/* <div className={`mt-5 hidden md:block ${styles.flexCenter} `}>
           <button className={`w-full ${styles.btnCSS}`} onClick={handaleClick} >
           Search
           </button>
-        </div>
+        </div> */}
 
       </div>
     </section>

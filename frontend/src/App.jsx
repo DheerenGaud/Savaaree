@@ -45,7 +45,7 @@ function App() {
           <Route path="/PhoneNO" element={<PhoneNO />} />
         </Route>
 
-        <Route path="/rider" element={<ProtectedRoute />}>
+        <Route path="/rider" >
           <Route element={<RiderMainLayout />}>
             <Route path="" element={<Ride />} />
           </Route>

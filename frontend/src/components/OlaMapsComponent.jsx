@@ -6,7 +6,7 @@ const OlaMapsGeolocation = () => {
   const dispatch = useDispatch();
   const { myMap, geolocate } = useSelector((state) => state.OlaMapSlice);
   useEffect(() => {
-    console.log("he");
+    console.log(myMap);
     
     // Ensure the OlaMaps SDK is loaded
     if (window.OlaMapsSDK) {
