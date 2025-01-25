@@ -113,24 +113,26 @@ const login = asyncHandler(async (req, res) => {
   const { phoneNo,email,id ,role} = req.body;
   
   try {
-    if (!email && !phoneNo) {
-      throw new ApiError(400, "Either email or phone number is required.");
-    }
     if(!role){
       console.log(role); 
       throw new ApiError(400, "role is not selected");
     }
+    
+    const queryConditions = [];
+    if (email) queryConditions.push({ email: email.trim() });
+    if (phoneNo) queryConditions.push({ phoneNo: phoneNo.trim() });
+    if (id) queryConditions.push({ id: id.trim() });
+    
+    if (queryConditions.length === 0) {
+      throw new ApiError(400, "Either email, phone number, or id is required.");
+    }
+    
     const user = await User.findOne({
-      $or: [
-        { email: email },
-        { phoneNo: phoneNo },
-        { id: id }
-      ],
-      $and:[
-         {role:role}
-      ]
+      $or: queryConditions,
+      role: role
     });
 
+    
     if (!user) {
       throw new ApiError(404, "User does not exist...");
     }

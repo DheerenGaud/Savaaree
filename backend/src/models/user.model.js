@@ -2,21 +2,26 @@ import mongoose, { Schema } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-const locationSchema = new Schema({
-    segment: {
-        type: String,
-        required: true, // This can be optional based on your use case
-        trim: true,
+const locationSchema = new Schema(
+    {
+        segment: {
+            type: String,
+            required: true, // This can be optional based on your use case
+            trim: true,
+        },
+        lat: {
+            type: Number,
+            required: true,
+        },
+        long: {
+            type: Number,
+            required: true,
+        }
     },
-    lat: {
-        type: Number,
-        required: true,
-    },
-    long: {
-        type: Number,
-        required: true,
+    {
+        _id: false // Prevents Mongoose from adding an _id field
     }
-});
+);
 
 
 const userSchema = new Schema(
@@ -53,9 +58,13 @@ const userSchema = new Schema(
         licenseNumber: {
             type: String,
         },
-        vehicleDetails: {
+        vehicle: {
             type: Schema.Types.ObjectId,
             ref: 'Vehicle',
+        },
+        documents:{
+            type: Schema.Types.ObjectId,
+            ref: 'Document',
         },
         location: {
             type: locationSchema,

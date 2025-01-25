@@ -38,6 +38,8 @@ const handaleClick = async () => {
       <div className="md:flex   md:justify-between gap-x-6 ">
         <div className=" w-full hidden md:block sm:w-[30%] ">
           <RideFrom />
+
+          
         </div>
         <div className="flex flex-col md:flex-row gap-x-6">
           {/* Image comes first on mobile and second on desktop */}

@@ -128,7 +128,7 @@ class Geohash {
 
         for (let i=0; i<geohash.length; i++) {
             const chr = geohash.charAt(i);
-            const idx = base32.indexOf(chr);
+            const idx = process.env.BASE32.indexOf(chr);
             if (idx == -1) throw new Error('Invalid geohash');
 
             for (let n=4; n>=0; n--) {
@@ -204,7 +204,7 @@ class Geohash {
         }
 
         // append letter for direction to parent
-        return parent + base32.charAt(neighbour[direction][type].indexOf(lastCh));
+        return parent + process.env.BASE32.charAt(neighbour[direction][type].indexOf(lastCh));
     }
 
 
@@ -232,6 +232,8 @@ class Geohash {
 
 const getSegment=(lat,long,size)=>{
 //    const segment = Geohash.encode(19.035981, 73.014713, 7)
+console.log(process.env.BASE32);
+
    const segment = Geohash.encode(lat, long, size)
    return segment;
 }
@@ -247,6 +249,8 @@ const decodeSegment = (segment)=>{
 // }
 
 const getNeighbours = (segment) => {
+    console.log(process.env.BASE32);
+
     const arr =  Object.values(Geohash.neighbours(segment));
     return arr 
 }
@@ -284,6 +288,8 @@ const getNeighbours = (segment) => {
 //     w: 'te7um3q',
 //     nw: 'te7um3w'
 //   }
+console.log(process.env.BASE32);
+
 
 export{
     getSegment,getNeighbours,decodeSegment

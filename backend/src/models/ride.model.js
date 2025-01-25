@@ -1,20 +1,26 @@
 import mongoose, { Schema } from "mongoose";
 
-const locationSchema = new Schema({
-    segment: {
-        type: String,
-        required: true, // This can be optional based on your use case
-        trim: true,
+const locationSchema = new Schema(
+    {
+        segment: {
+            type: String,
+            required: true, // This can be optional based on your use case
+            trim: true,
+        },
+        lat: {
+            type: Number,
+            required: true,
+        },
+        long: {
+            type: Number,
+            required: true,
+        }
     },
-    lat: {
-        type: Number,
-        required: true,
-    },
-    long: {
-        type: Number,
-        required: true,
+    {
+        _id: false // Prevents Mongoose from adding an _id field
     }
-});
+);
+
 const passengerSchema = new Schema({
     userId: {
         type: Schema.Types.ObjectId,
@@ -45,6 +51,12 @@ const passengerSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Payment',
     },
+    distance:{
+        type:String
+    }
+}
+,{
+  _id:false
 });
 
 
@@ -68,18 +80,21 @@ const rideSchema = new Schema(
             type: locationSchema,
             required: false, 
         },
-        passengerCount: {
-            type: Number,
-            default: 0,
-        },
         shereingStatus:{
             type:Boolean,
             default:true,
         },
         path:{
             type:String
+        },
+        distance:{
+            type:String
+        },
+        vehicle:{
+            type:Schema.Types.ObjectId,
+            ref: 'Vehicle',
+            required: true,
         }
-    
     },
     {
         timestamps: true,
