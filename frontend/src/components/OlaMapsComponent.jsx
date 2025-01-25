@@ -6,12 +6,8 @@ const OlaMapsGeolocation = () => {
   const dispatch = useDispatch();
   const { myMap, geolocate } = useSelector((state) => state.OlaMapSlice);
   useEffect(() => {
-    console.log(myMap);
-    
-    // Ensure the OlaMaps SDK is loaded
-    if (window.OlaMapsSDK) {
-      // console.log(width);
 
+    if (window.OlaMapsSDK) {
       if(myMap===null){
         // Initialize Ola Maps
         dispatch(init_Ola_Map());
@@ -40,7 +36,7 @@ const OlaMapsGeolocation = () => {
 
   return (
   
-      <div id="map"  className="h-full object-cover rounded-xl" ></div>
+      <div id="map"  className="h-full object-cover " ></div>
  
   );
 };

@@ -42,9 +42,6 @@ app.get("/", (req, res) => {
     res.send("hello");
 });
 
-console.log(process.env.AWS_REGION);
-console.log(process.env.ACCESS_TOKEN_SECRET);
-
 
 // this is for API always returns JSON-formatted error messages isted of sending html Error mag
 app.use(errorHandler);

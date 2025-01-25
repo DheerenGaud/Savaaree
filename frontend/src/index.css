@@ -204,3 +204,25 @@
   outline: none; /* Removes the default focus outline */
   border: none;  /* Removes any visible border */
 }
+
+/* Default padding (already defined) */
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+.py-6 {
+ padding-top: 1.5rem; 
+ padding-bottom: 1.5rem;
+}
+
+/* Remove padding specifically for /ride on mobile views */
+@media (max-width: 768px) {
+  .remove-padding-mobile .px-6 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .remove-padding-mobile .py-6 {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+}

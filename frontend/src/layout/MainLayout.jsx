@@ -39,7 +39,7 @@ function MainLayout() {
         </div>
       ) : (
         <div className={`bg-primary ${styles.paddingX} ${styles.flexCenter}`}>
-          <div className={`${styles.boxWidth}`}>
+          <div className={`${styles.boxWidth}`} >
             <Outlet />
           </div>
         </div>

@@ -33,17 +33,15 @@ const ChooseRides = () => {
 
     const rides = [
         { name: 'Uber Go', time: '1 Min away · 9:37 PM', price: '₹299.90', description: 'Affordable compact rides', image: '/assets/ubergo.png' },
-        { name: 'GoSedan', time: '2 Min away · 9:37 PM', price: '₹297.90', description: 'Affordable Sedans', image: '/assets/sedan.png' },
+        { name: 'My Auto', time: '66 Min away · 9:37 PM', price: '₹200', description: 'No Bargaining , Doorstep Pick-up', image: '/assets/uberauto.png' },
+        { name: 'Uber Go', time: '1 Min away · 9:37 PM', price: '₹299.90', description: 'Affordable compact rides', image: '/assets/ubergo.png' },
+        { name: 'My Auto', time: '66 Min away · 9:37 PM', price: '₹200', description: 'No Bargaining , Doorstep Pick-up', image: '/assets/uberauto.png' },
         { name: 'Uber Auto', time: '4 Min away · 9:37 PM', price: '₹300.90', description: 'No Bargaining , Doorstep Pick-up', image: '/assets/uberauto.png' },
-        { name: 'Premier', time: '7 Min away · 9:37 PM', price: '₹381.27', description: 'Comfortable sedans, top-quality drivers', image: '/assets/premier.png' },
-        { name: 'Green', time: '10 Min away · 9:37 PM', price: '₹381.2', description: 'Comfortable electric sedans, top-quality drivers', image: '/assets/green.png' },
-        { name: 'UberXL', time: '5 Min away · 9:37 PM', price: '₹494.85', description: 'Comfortable SUVs', image: '/assets/uberxl.png' },
-        { name: 'Uber Pet', time: '2 Min away · 9:37 PM', price: '694.85', description: 'Ride with your furry friend', image: '/assets/uberpet.png' },
-        { name: 'Uber Taxi', time: '5 Min away · 9:37 PM', price: '694.85', description: 'Local non-AC taxi cabs', image: '/assets/ubertaxi.png' },
+        { name: 'Uber Go', time: '1 Min away · 9:37 PM', price: '₹299.90', description: 'Affordable compact rides', image: '/assets/ubergo.png' },
     ];
 
     return (
-        <div className="text-white w-[100%] bg-discount-gradient md:rounded-t-none rounded-t-[30px] p-6 md:h-[656px] md:overflow-auto h-[460px] overflow-auto ">
+        <div className="text-white bg-discount-gradient  h-[650px] md:h-[100%] md:overflow-auto p-5 overflow-auto ">
             <div className='flex items-center justify-center mb-3 md:hidden '>
                 <div className='h-1 bg-slate-400 rounded-lg w-16  '></div>
                 

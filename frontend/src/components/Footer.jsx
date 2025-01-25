@@ -1,8 +1,15 @@
 import styles from "../style";
 import { footerLinks, socialMedia } from "../constants/index";
+import { useSelector } from "react-redux";
+import React from "react";
 
-const Footer = () => (
-  <section className={`${styles.flexCenter} ${styles.paddingY} flex-col`}>
+const Footer = () => {
+
+
+  const {showFooter} = useSelector((state) => state.HelperSlice);
+  
+ return (
+showFooter&&(<section className={`${styles.flexCenter} ${styles.paddingY} flex-col`}>
     <div className={`${styles.flexStart} md:flex-row flex-col mb-8 w-full`}>
       <div className="flex-[1] flex flex-col justify-start mr-10">
         <img
@@ -57,7 +64,7 @@ const Footer = () => (
         ))}
       </div>
     </div>
-  </section>
-);
+  </section>)
+)};
 
 export default Footer;

@@ -7,21 +7,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 // API
-import {  } from "../api/savaree_api/rider_api";
-import {  } from "../util/hleper";
-
-
-import {} from "../redux/slice/olaMapSlice"
-import {set_Alert} from "../redux/slice/userSlice"
 import { get_Driver_For_Route } from "../api/savaree_api/rider_api.js";
+
+
+import {set_Alert} from "../redux/slice/userSlice"
+import { set_Ui } from "../redux/slice/helperSlice.js";
 
 import ChooseRides from "../components/ChooseRides.jsx";
 
 function Ride() {
-   const { path } = useSelector((state) => state.OlaMapSlice);
-   const { selectedLocations } = useSelector((state) => state.UserSlice);
-   const dispatch = useDispatch();
- 
+  const { path } = useSelector((state) => state.OlaMapSlice);
+  const { selectedLocations } = useSelector((state) => state.UserSlice);
+  const dispatch = useDispatch();
+  
 const handaleClick = async () => {
     console.log({path,selectedLocations});
     dispatch(get_Driver_For_Route({path,selectedLocations}))
@@ -33,17 +31,15 @@ const handaleClick = async () => {
   return (
     <section
       id="rider"
-      className={`flex md:flex-row flex-col  py-6 md:h-[700px] `}
+      className={`flex md:flex-row flex-col  py-6 h-screen`}
     >
       <div className="md:flex   md:justify-between gap-x-6 ">
         <div className=" w-full hidden md:block sm:w-[30%] ">
           <RideFrom />
-
-          
         </div>
         <div className="flex flex-col md:flex-row gap-x-6">
           {/* Image comes first on mobile and second on desktop */}
-          <div className="rounded-xl h-[170px]  md:h-full md:w-[650px] order-1 md:order-2">
+          <div className="h-[280px] md:h-full    md:w-[650px] order-1 md:order-2">
             {/* <img
               src="/assets/mappp.jpg"
               className="object-fill h-full w-[500px]"
@@ -53,9 +49,10 @@ const handaleClick = async () => {
           </div>
 
           {/* ChooseRide comes second on mobile and first on desktop */}
-          <div className="order-2 md:order-1">
+          <div className="order-2 md:order-1 w-full  md:h-full ">
             <ChooseRides />
           </div>
+
         </div>
        
         <div
