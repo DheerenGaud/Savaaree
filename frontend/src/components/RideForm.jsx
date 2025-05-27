@@ -6,17 +6,26 @@ import { useNavigate } from "react-router-dom";
 
 // API
 import { get_RouteData_Api } from "../api/savaree_api/rider_api";
+import { get_Driver_For_Route } from "../api/savaree_api/rider_api.js";
+
 import { decodePolyline } from "../util/hleper";
 
 import { add_Polyline_To_Map, set_Locations_On_MAP } from "../redux/slice/olaMapSlice";
 import { set_Selected_Locations, set_Alert } from "../redux/slice/userSlice";
+import { set_Ui ,push_In_BackStack} from '../redux/slice/helperSlice.js';
 
-const RideForm = () => {
+const RideForm = ({showDriver}) => {
   const [pickupQuery, setPickupQuery] = useState('');
   const [dropoffQuery, setDropoffQuery] = useState('');
   const [showPickupSuggestions, setShowPickupSuggestions] = useState(false);
   const [showDropoffSuggestions, setShowDropoffSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+  const { locations } = useSelector((state) => state.UserSlice);
+  const { path } = useSelector((state) => state.OlaMapSlice);
+
+    const {showRideForm} = useSelector((state) => state.HelperSlice);
+  
+  
   
   const selectedLocations = useRef({ pickup: null, dropoff: null }); // Use useRef for locations
   
@@ -25,7 +34,26 @@ const RideForm = () => {
 
   const handaleClick = async () => {
   if(isAuthenticated){
-       
+    if (
+      selectedLocations.current.pickup &&
+      selectedLocations.current.dropoff
+    ) {
+      // console.log(path,locations);
+      const result = await dispatch(get_Driver_For_Route({path,locations}))
+      console.log(result.payload);
+      if(result.payload.success&&result.payload.drivers.length>0||result.payload.freeDrivers.length>0){
+         dispatch(set_Ui({ name: 'showChooseRides', value: true })); 
+         dispatch(set_Ui({ name: 'showBack', value: true }));
+         dispatch(set_Ui({ name: 'showRideForm', value: false }));
+         dispatch(push_In_BackStack('showRideForm'));
+         dispatch(push_In_BackStack('showChooseRides'));
+           
+      }
+      else{
+        dispatch(set_Ui({ name: 'showChooseRides', value: false })); 
+      }
+      
+    }
       }
       else{
           dispatch(set_Alert({type:"error",msg:"user Not authenticated"}))
@@ -42,9 +70,9 @@ const RideForm = () => {
       const result = await dispatch(
         get_RouteData_Api({
           source_lat: selectedLocations.current.pickup.coordinates.lat,
-          source_long: selectedLocations.current.pickup.coordinates.lng,
+          source_lng: selectedLocations.current.pickup.coordinates.lng,
           destination_lat: selectedLocations.current.dropoff.coordinates.lat,
-          destination_long: selectedLocations.current.dropoff.coordinates.lng,
+          destination_lng: selectedLocations.current.dropoff.coordinates.lng,
         })
       );
       if(result.payload.data){
@@ -165,8 +193,8 @@ const RideForm = () => {
   );
 
   return (
-    <div className="flex flex-col space-y-3 relative">
-      {/* Pickup Input */}
+    
+    <div className={`flex flex-col space-y-3 relative ${!showRideForm ? 'hidden md:block' : ''}`}>
       <div className="relative">
         <div className="flex items-center bg-white rounded-md w-full p-2">
           <img src="/assets/start.png" className="h-[35px]" alt="" />
@@ -210,7 +238,7 @@ const RideForm = () => {
 
       <div>
         <button className={`${styles.btnCSS} hidden md:block`} onClick={handaleClick}>
-        Search
+        See Prices
         </button>
       </div>
     </div>

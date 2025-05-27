@@ -14,7 +14,7 @@ import Alert from '../components/Alert';
   const { loading } = useSelector((state) => state.UserSlice);
   
   return (
-    <div className="bg-primary w-full overflow-hidden ">
+    <div className="bg-primary w-full overflow-hidden  ">
           <Alert/>
       <div  className={`${styles.paddingX} ${styles.flexCenter}`}>
       <div className={`${styles.boxWidth}`}>
@@ -29,7 +29,7 @@ import Alert from '../components/Alert';
         </div>
       ) : (
         // If not loading, show the Outlet (child components)
-        <div className={`bg-primary ${styles.paddingX} ${styles.flexCenter} `}>
+        <div className={`bg-primary ${styles.paddingX} ${styles.flexCenter}  `}>
           <div className={`${styles.boxWidth}`}>
             <Outlet />
           </div>

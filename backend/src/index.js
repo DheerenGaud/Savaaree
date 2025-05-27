@@ -5,8 +5,9 @@ import { start } from './services/aws.js'
 
 
 dotenv.config({
-    path: "./.env"
+    path: "../.env"
 })
+console.log(`⚙️ Server is running at port : ${process.env.PORT}`);
 
 
 connectDB()

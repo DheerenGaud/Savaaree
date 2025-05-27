@@ -65,6 +65,7 @@ const OlaMapSlice = createSlice ({
           labelMarker.textContent = name.length > 25 ? name.substring(0, 25) + "..." : name;
       
           const lngLatArray = [coordinates.lng, coordinates.lat];
+          console.log(state.myMap);
           
           // Remove previous markers if they exist
           if (type === 'pickup') {

@@ -14,6 +14,9 @@ app.use(cors({
     credentials: true,
 }));
 
+app.get("/home",(req,res)=>{
+   res.send("hello")
+})
 
 
 app.use(express.json({ limit: "16kb" }));

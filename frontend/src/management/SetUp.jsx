@@ -13,7 +13,7 @@ const SetUp = ({ children }) => {
   useEffect(() => {
     if (location.pathname.startsWith('/rider')) {
       dispatch(set_Ui({ name: 'showFooter', value: false }));
-      dispatch(set_Ui({ name: 'showNavBar', value: false }));
+      // dispatch(set_Ui({ name: 'showNavBar', value: false }));
       document.body.classList.add('remove-padding-mobile'); 
     } else {
       dispatch(set_Ui({ name: 'showFooter', value: true }));

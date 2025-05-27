@@ -16,9 +16,10 @@ export const get_RouteData_Api = createAsyncThunk("get_RouteData_Api", async (da
 
 
 export const get_Driver_For_Route = createAsyncThunk("get_Driver_For_Route", async (data, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(`${BACKEND_URL}/getDriverForRoute`, data,{withCredentials:true});
   
+    try {
+      const response = await axios.post(`${BACKEND_URL}/getDriversForRoute`, data,{withCredentials:true});
+      
       return response.data;
     } catch (err) {     
       const errorMessage = err.response?.data || "An unknown error occurred.";

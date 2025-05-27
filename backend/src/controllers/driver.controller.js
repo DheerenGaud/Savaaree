@@ -19,14 +19,14 @@ import { Vehicle } from "../models/verical.model.js";
 
 
 const updateLocation = asyncHandler(async (req, res) => {
-    const { lat, long } = req.body;
+    const { lat, lng } = req.body;
 
     try {
-        if (!lat || !long) {
-            throw new ApiError(400, "Latitude and Longitude are required.");
+        if (!lat || !lng) {
+            throw new ApiError(400, "Latitude and lngitude are required.");
         }
 
-        const segment = getSegment(lat, long, 7);
+        const segment = getSegment(lat, lng, 6);
         const driver = req.user;
         const oldSegment = driver?.location?.segment;
 
@@ -61,7 +61,7 @@ const updateLocation = asyncHandler(async (req, res) => {
                 $set: {
                     "location.segment": segment,
                     "location.lat": lat,
-                    "location.long": long,
+                    "location.lng": lng,
                 },
             },
             { new: true }
@@ -82,6 +82,8 @@ const updateLocation = asyncHandler(async (req, res) => {
 
 
 const updateDocument = asyncHandler(async (req, res) => {
+  console.log(req.body);
+  
     try {
         // Validate file existence
         if (!req.file) {
@@ -123,7 +125,9 @@ const updateDocument = asyncHandler(async (req, res) => {
 
 const addVehicle = asyncHandler(async (req, res) => {
     try {
-      const { vehicleData } = req.body;
+      // const { vehicleData } = req.body;
+      // console.log(vehicleData);
+      const vehicleData = {make:"Toyota",model:"Camry",year:2020,color:"Red",licensePlate:"bch856413",driver:"67a4db8465c0bf56ea80e4a3"};
        // Validate file existence
        if (!req.files) {
         throw new ApiError(400, "Vehicle photo not guiven");

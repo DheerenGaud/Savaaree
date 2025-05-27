@@ -11,7 +11,7 @@ const locationSchema = new Schema(
             type: Number,
             required: true,
         },
-        long: {
+        lng: {
             type: Number,
             required: true,
         }

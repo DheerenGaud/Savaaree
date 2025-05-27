@@ -230,11 +230,10 @@ class Geohash {
 
 }
 
-const getSegment=(lat,long,size)=>{
+const getSegment=(lat,lng,size)=>{
 //    const segment = Geohash.encode(19.035981, 73.014713, 7)
-console.log(process.env.BASE32);
 
-   const segment = Geohash.encode(lat, long, size)
+   const segment = Geohash.encode(lat, lng, size)
    return segment;
 }
 const decodeSegment = (segment)=>{
@@ -249,7 +248,6 @@ const decodeSegment = (segment)=>{
 // }
 
 const getNeighbours = (segment) => {
-    console.log(process.env.BASE32);
 
     const arr =  Object.values(Geohash.neighbours(segment));
     return arr 
@@ -288,7 +286,6 @@ const getNeighbours = (segment) => {
 //     w: 'te7um3q',
 //     nw: 'te7um3w'
 //   }
-console.log(process.env.BASE32);
 
 
 export{

@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import Modal from "./ModalUserSelection.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { add_User_Type } from "../redux/slice/userSlice";
-import { set_NavigateTo } from "../redux/slice/helperSlice.js";
+import { set_NavigateTo ,pop_From_BackStack } from "../redux/slice/helperSlice.js";
 import { user_Logout_Api } from "../api/savaree_api/user_api.js";
 
 function Navbar({ navLinks, riderNavLinks, riderProfileLinks }) {
@@ -14,6 +14,8 @@ function Navbar({ navLinks, riderNavLinks, riderProfileLinks }) {
   const timeoutRef = useRef(null);
   const [toggle, setToggle] = useState(false);
 
+  const {showNavBar,showBack} = useSelector((state) => state.HelperSlice);
+
   const MoveToHome = () => {
     navigate("/");
   };
@@ -23,6 +25,12 @@ function Navbar({ navLinks, riderNavLinks, riderProfileLinks }) {
     if (result.payload.success) {
       navigate("/");
     }
+  };
+
+  const handleBack = () => {
+    dispatch(pop_From_BackStack())
+    dispatch(pop_From_BackStack())
+
   };
 
   const toggleModal = () => {
@@ -52,8 +60,16 @@ function Navbar({ navLinks, riderNavLinks, riderProfileLinks }) {
   };
 
   return (
-    <nav className="w-full flex py-6 justify-between items-center navbar">
-      <div className="flex space-x-8">
+    showNavBar&& <nav className="w-full flex py-2 justify-between items-center navbar ">
+      <div className="flex space-x-5 justify-between items-center">
+
+       {showBack&&<img
+          src="/assets/back.png"
+          alt="Savaaree Logo"
+          className="w-[28px] h-[25px] cursor-pointer mx-2"
+          onClick={handleBack}
+        />}
+        
         <img
           src="/assets/SAVAAREE_LOGO.png"
           onClick={MoveToHome}
@@ -130,11 +146,11 @@ function Navbar({ navLinks, riderNavLinks, riderProfileLinks }) {
 
         {riderProfileLinks && (
           <>
-            <li>
+            {/* <li>
               <button className="bg-white text-black font-medium rounded-full px-3 py-2 ml-2 hover:bg-gray-100 transition duration-300 ease-in-out">
                 Activity
               </button>
-            </li>
+            </li> */}
             <li
               className="ml-4 relative"
               onMouseEnter={() => handleProfileHover(true)}
@@ -143,7 +159,7 @@ function Navbar({ navLinks, riderNavLinks, riderProfileLinks }) {
               <img
                 src="assets/defaul_profile.jpeg"
                 alt="profile"
-                className="w-[50px] h-[49px] rounded-full cursor-pointer"
+                className="w-[30px] h-[30px] rounded-full cursor-pointer"
               />
               {isProfileMenuOpen && (
                 <div

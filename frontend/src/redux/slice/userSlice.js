@@ -9,7 +9,7 @@ const UserSlice = createSlice({
   initialState: {
     // map
     lat: null,
-    long: null,
+    lng: null,
     
     
     // profile
@@ -22,7 +22,7 @@ const UserSlice = createSlice({
     
 
 
-    selectedLocations:{
+    locations:{
       pickup: null,
       dropoff: null
     },
@@ -47,13 +47,13 @@ const UserSlice = createSlice({
       const { type, locationData } = action.payload;
       
       if (type === "pickup") {
-        state.selectedLocations = {
-          ...state.selectedLocations,
+        state.locations = {
+          ...state.locations,
           pickup: locationData,
         };
       } else {
-        state.selectedLocations = {
-          ...state.selectedLocations,
+        state.locations = {
+          ...state.locations,
           dropoff: locationData,
         };
       }

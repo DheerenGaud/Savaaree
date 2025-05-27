@@ -39,15 +39,18 @@ function convertDuration(duration) {
 
 
 const fetchRouteData = asyncHandler(async (req, res) => {
-    const { source_lat, source_long, destination_lat, destination_long } = req.body;
+    const { source_lat, source_lng, destination_lat, destination_lng } = req.body;
     // faceh route data by ola api
+    console.log(source_lat, source_lng, destination_lat, destination_lng);
+    
     try {
-        if (!source_lat || !source_long || !destination_lat || !destination_long) {
+        if (!source_lat || !source_lng || !destination_lat || !destination_lng) {
             throw new ApiError(400, "Incomplete Source & Destination");
         }
 
-        const data = await fetchRouteData_OLA_Api(source_lat, source_long, destination_lat, destination_long);
-
+        const data = await fetchRouteData_OLA_Api(source_lat, source_lng, destination_lat, destination_lng);
+        // console.log(data);
+        
         if (data.status !== "SUCCESS") {
             throw new ApiError(400, "Failed to Fetch Route Data");
         }
@@ -69,7 +72,7 @@ const fetchRouteData = asyncHandler(async (req, res) => {
 //     const { pickup } = locations;
 
 //     try {
-//         const segment = getSegment(pickup.lat, pickup.long, 7);
+//         const segment = getSegment(pickup.lat, pickup.lng, 7);
 //         const neighbors = getNeighbours(segment);
 //         const neighborSegments = [segment, ...neighbors].map(String);
 
@@ -178,61 +181,34 @@ const fetchRouteData = asyncHandler(async (req, res) => {
 const getDriversForRoute = asyncHandler(async (req, res) => {
     const { locations, path } = req.body;
     const { pickup } = locations;
-
+    
     try {
-        // Compute segments more efficiently
-        const segment = getSegment(pickup.lat, pickup.long, 7);
-        const neighborSegments = [
-            segment, 
-            ...getNeighbours(segment)
-        ].map(String);
+        const segment = getSegment(pickup.coordinates.lat, pickup.coordinates.lng, 6);
+        const neighborSegments = [segment, ...getNeighbours(segment)].map(String);
+        console.log(pickup);
+        // console.log(neighborSegments);
 
-        // Aggregate pipeline with optimized stages
+        // Aggregate pipeline to fetch drivers
         const drivers = await Segment.aggregate([
-            // Early filtering of segments
-            {
-                $match: {
-                    segment: { $in: neighborSegments }
-                }
-            },
-            // Efficient lookups with early projections
+            { $match: { segment: { $in: neighborSegments } } },
             {
                 $lookup: {
                     from: "users",
                     let: { driverIds: "$drivers" },
                     pipeline: [
                         { $match: { $expr: { $in: ["$_id", "$$driverIds"] } } },
-                        { $project: {
-                            _id: 1,
-                            name: 1,
-                            phoneNo: 1,
-                            currentRide: 1,
-                            vehicle: 1
-                        }}
+                        { $project: { _id: 1, name: 1, phoneNo: 1, currentRide: 1, vehicle: 1, location: 1 } }
                     ],
                     as: "driversInfo"
                 }
             },
-            // Unwind carefully
-            {
-                $unwind: {
-                    path: "$driversInfo",
-                    preserveNullAndEmptyArrays: false
-                }
-            },
-            // Parallel lookups with minimal processing
+            { $unwind: { path: "$driversInfo", preserveNullAndEmptyArrays: false } },
             {
                 $lookup: {
                     from: "rides",
                     localField: "driversInfo.currentRide",
                     foreignField: "_id",
-                    pipeline: [
-                        { $project: {
-                            path: 1,
-                            passengers: 1,
-                            status: 1
-                        }}
-                    ],
+                    pipeline: [{ $project: { path: 1, passengers: 1, status: 1 } }],
                     as: "currentRideInfo"
                 }
             },
@@ -241,39 +217,27 @@ const getDriversForRoute = asyncHandler(async (req, res) => {
                     from: "vehicles",
                     localField: "driversInfo.vehicle",
                     foreignField: "_id",
-                    pipeline: [
-                        { $project: {
-                            licensePlate: 1,
-                            type: 1,
-                            carImages: 1
-                        }}
-                    ],
+                    pipeline: [{ $project: { licensePlate: 1, type: 1, carImages: 1, maxCap: 1, make: 1, model: 1 } }],
                     as: "vehicleInfo"
                 }
             },
-            // Efficient array element extraction
-            {
-                $addFields: {
-                    currentRideInfo: { $first: "$currentRideInfo" },
-                    vehicleInfo: { $first: "$vehicleInfo" }
-                }
-            },
-            // Optimized path matching
+            { $addFields: { currentRideInfo: { $first: "$currentRideInfo" }, vehicleInfo: { $first: "$vehicleInfo" } } },
             {
                 $match: {
                     $or: [
+                        { "currentRideInfo": null },
                         { "currentRideInfo.path": path },
                         { "currentRideInfo.path": { $regex: path.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), $options: "i" } }
                     ]
                 }
             },
-            // Efficient projection with computed fields
             {
                 $project: {
                     driverId: "$driversInfo._id",
                     name: "$driversInfo.name",
                     phone: "$driversInfo.phoneNo",
                     vehiclePlateNo: "$vehicleInfo.licensePlate",
+                    location: "$driversInfo.location", // Add location for distance calculation
                     rideDetails: {
                         distance: { $sum: "$currentRideInfo.passengers.distance" },
                         duration: {
@@ -290,27 +254,52 @@ const getDriversForRoute = asyncHandler(async (req, res) => {
                                 }
                             }
                         },
-                        passengerCount: { $size: "$currentRideInfo.passengers" },
+                        passengerCount: { $cond: { if: { $isArray: "$currentRideInfo.passengers" }, then: { $size: "$currentRideInfo.passengers" }, else: 0 } },
                         status: "$currentRideInfo.status"
                     },
                     vehicle: {
                         type: "$vehicleInfo.type",
-                        images: "$vehicleInfo.carImages"
-                    }
+                        images: "$vehicleInfo.carImages",
+                        maxCap: "$vehicleInfo.maxCap",
+                        make: "$vehicleInfo.make",
+                        model: "$vehicleInfo.model",
+                    },
+                    isFree: { $eq: ["$driversInfo.currentRide", null] }
                 }
             }
-        ]).option({ maxTimeMS: 30000 }); // Add a timeout to prevent long-running queries
+        ]).option({ maxTimeMS: 30000 });
 
-        // Structured response
+        // Fetch duration for each driver asynchronously
+        const driversWithDurations = await Promise.all(drivers.map(async (driver) => {
+            try {
+                const x = await feach_DistanceMatrix_OLA_Api(
+                    pickup.coordinates.lat,
+                    pickup.coordinates.lng,
+                    driver.location.lat,
+                    driver.location.lng
+                );
+                driver.duration = convertDuration(x.rows[0].elements[0].duration);
+            } catch (error) {
+                console.error("Error fetching duration for driver:", driver.driverId, error);
+                driver.duration = null; // Handle errors gracefully
+            }
+            return driver;
+        }));
+
+        // Separate free and busy drivers
+        const freeDrivers = driversWithDurations.filter(driver => driver.isFree);
+        const busyDrivers = driversWithDurations.filter(driver => !driver.isFree);
+
         return res.status(200).json({
             success: true,
-            drivers,
-            count: drivers.length,
+            drivers: busyDrivers,
+            freeDrivers,
+            count: driversWithDurations.length,
+            freeCount: freeDrivers.length,
             message: "Drivers fetched successfully"
         });
 
     } catch (error) {
-        // Comprehensive error handling
         console.error("Error in getDriversForRoute:", error);
         return res.status(500).json({
             success: false,
@@ -324,6 +313,8 @@ const getDriversForRoute = asyncHandler(async (req, res) => {
     }
 });
 
+
+
 const confirmRide = asyncHandler(async (req, res) => {
     const {shereingStatus,driverId,path,locations,duration,distance,rideId,vehicle} = req.body;
     
@@ -334,14 +325,14 @@ const confirmRide = asyncHandler(async (req, res) => {
 
      const { pickup, dropoff } = locations;
      const pickupLocation = {
-         segment : getSegment(pickup.lat,pickup.long,7),
-         lat:pickup.lat,
-         long:pickup.long
+         segment : getSegment(pickup.coordinates.lat,pickup.coordinates.lng,7),
+         lat:pickup.coordinates.lat,
+         lng:pickup.coordinates.lng
      }
      const dropLocation = {
-         segment: getSegment(dropoff.lat,dropoff.long,7),
+         segment: getSegment(dropoff.lat,dropoff.lng,7),
          lat:dropoff.lat,
-         long:dropoff.long
+         lng:dropoff.lng
      }
      const newPassenger = createPassenger(pickupLocation,dropLocation,req.user._id,duration,distance)
      

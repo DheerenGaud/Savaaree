@@ -21,8 +21,8 @@ function Home() {
   const dispatch = useDispatch();
   const { selectedLocations } = useSelector((state) => state.UserSlice);
   const isAuthenticated =  document.cookie.includes("authenticated"); 
-const handaleClick = async () => {
-  console.log("selectedLocations");
+  const handaleClick = async () => {
+  // console.log("selectedLocations");
   
       if(isAuthenticated){
        
@@ -67,7 +67,7 @@ const handaleClick = async () => {
           </div>
 
           <div className=" w-full sm:w-full ">
-            <RideFrom />
+            <RideFrom showDriver={handaleClick}  />
           </div>
         </div>
 

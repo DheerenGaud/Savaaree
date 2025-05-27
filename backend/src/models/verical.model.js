@@ -1,7 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 
 const vehicleSchema = new Schema(
-    {
+    {   type:{
+           String
+        },
         make: {
             type: String,
             // required: true
@@ -12,7 +14,6 @@ const vehicleSchema = new Schema(
         },
         year: {
             type: Number,
-            // required: true
         },
         carImages:[{
             type:String
@@ -23,13 +24,14 @@ const vehicleSchema = new Schema(
         },
         licensePlate: {
             type: String,
-            // required: true,
-            // unique: true
         },
         driver: {
             type: Schema.Types.ObjectId,
             ref: 'User',
         }, 
+        maxCap:{
+            type:Number
+        }
     },
     {
         timestamps: true
